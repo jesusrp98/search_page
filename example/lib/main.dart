@@ -1,11 +1,11 @@
-import 'package:example/person.dart';
 import 'package:flutter/material.dart';
 import 'package:search_page/search_page.dart';
+
+import 'person.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -51,6 +51,12 @@ class MyHomePage extends StatelessWidget {
           delegate: SearchPage<Person>(
             items: people,
             searchLabel: 'Search people',
+            suggestion: Center(
+              child: Text('Filter people by name, surname or age'),
+            ),
+            failure: Center(
+              child: Text('No person found :('),
+            ),
             filter: (person) => [
               person.name,
               person.surname,
