@@ -49,7 +49,7 @@ class SearchPage<T> extends SearchDelegate<T> {
   SearchPage({
     this.suggestion = const SizedBox(),
     this.failure = const SizedBox(),
-    this.builder,
+    @required this.builder,
     @required this.filter,
     @required this.items,
     this.searchLabel,
@@ -115,36 +115,25 @@ class SearchPage<T> extends SearchDelegate<T> {
     // Deletes possible blank spaces & converts the string to lower case
     final String cleanQuery = query.toLowerCase().trim();
 
-    // Using the [filter] moethod, filters through the [items] list
+    // Using the [filter] method, filters through the [items] list
+    // in order to select matching items
     final List<T> result = items
         .where(
+          // First we collect all [String] representation of each [item]
           (item) => filter(item)
+              // Then, transforms all results to lower case letters
               .map((value) => value = value?.toLowerCase()?.trim())
+              // Finally, checks wheters any coincide with the cleaned query
               .any((value) => value?.contains(cleanQuery) == true),
         )
         .toList();
 
     // Builds a list with all filtered items
     // if query and result list are not empty
-    return Builder(
-      builder: (_) {
-        if (cleanQuery.isEmpty) {
-          return suggestion;
-        } else if (result.isEmpty) {
-          return failure;
-        } else {
-          return ListView(
-            children: result
-                .map(
-                  builder ??
-                      (child) => ListTile(
-                            title: Text(child.toString()),
-                          ),
-                )
-                .toList(),
-          );
-        }
-      },
-    );
+    return (cleanQuery.isEmpty)
+        ? suggestion
+        : (result.isEmpty)
+            ? failure
+            : ListView(children: result.map(builder).toList());
   }
 }
