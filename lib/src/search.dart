@@ -42,6 +42,10 @@ class SearchPage<T> extends SearchDelegate<T> {
   /// They have [T] on run time.
   final List<T> items;
 
+  /// Theme that would be used in the [AppBar] widget, inside
+  /// the search view.
+  final ThemeData barTheme;
+
   SearchPage({
     this.suggestion = const SizedBox(),
     this.failure = const SizedBox(),
@@ -49,6 +53,7 @@ class SearchPage<T> extends SearchDelegate<T> {
     @required this.filter,
     @required this.items,
     this.searchLabel,
+    this.barTheme,
   })  : assert(suggestion != null),
         assert(failure != null),
         assert(builder != null),
@@ -58,14 +63,21 @@ class SearchPage<T> extends SearchDelegate<T> {
 
   @override
   ThemeData appBarTheme(BuildContext context) {
-    return Theme.of(context).copyWith(
-      textTheme: TextTheme(
-        title: TextStyle(color: Colors.white, fontSize: 20),
-      ),
-      inputDecorationTheme: InputDecorationTheme(
-        hintStyle: TextStyle(color: Colors.grey, fontSize: 20),
-      ),
-    );
+    return barTheme ??
+        Theme.of(context).copyWith(
+          textTheme: TextTheme(
+            title: TextStyle(
+              color: Theme.of(context).primaryTextTheme.title.color,
+              fontSize: 20,
+            ),
+          ),
+          inputDecorationTheme: InputDecorationTheme(
+            hintStyle: TextStyle(
+              color: Theme.of(context).primaryTextTheme.caption.color,
+              fontSize: 20,
+            ),
+          ),
+        );
   }
 
   @override
