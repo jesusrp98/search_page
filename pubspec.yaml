@@ -1,8 +1,8 @@
 name: search_page
 description: A new Flutter package.
-version: 0.0.1
+version: 0.1.0
 author: Jesus Rodriguez <jesusrope98@outlook.com>
-homepage: https://github.com/jesusrp98/expand_widget
+homepage: https://github.com/jesusrp98/search_page
 
 environment:
   sdk: ">=2.5.0 <3.0.0"
