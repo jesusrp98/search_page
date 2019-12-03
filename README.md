@@ -18,6 +18,8 @@ Also, you can customize suggestion and on-error widgets, provide custom search f
 
 Here is a example on how to use this package. You'd need to call the `SearchPage` class using the `showSearch` function built in.
 
+If you want to take a deeper look at the example, take a look at the [example](https://github.com/jesusrp98/search_page/tree/master/example) folder provided with the project.
+
 ```
 FloatingActionButton(
   child: Icon(Icons.search),
