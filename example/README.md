@@ -1,3 +1,4 @@
+```
 import 'package:flutter/material.dart';
 import 'package:search_page/search_page.dart';
 
@@ -74,3 +75,4 @@ class MyHomePage extends StatelessWidget {
     );
   }
 }
+```
