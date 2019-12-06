@@ -5,7 +5,7 @@
 [![Patreon](https://img.shields.io/badge/Support-Patreon-orange.svg?style=for-the-badge)](https://www.patreon.com/jesusrp98)
 [![Stars](https://img.shields.io/github/stars/jesusrp98/search_page.svg?style=for-the-badge)](https://github.com/jesusrp98/search_page/stargazers)
 
-Fast and easy way to build a custom search view experience.
+Fast and easy way to build a custom search experience in you app.
 
 This package aims to provide a simple way to build a search view, using available resources from the Flutter framework. It uses `SearchDelegate` as its fondation, in oder to build a 'material'
 experience.
