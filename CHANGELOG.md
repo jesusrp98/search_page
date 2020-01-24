@@ -1,3 +1,8 @@
+## [1.0.0] - January 24th, 2020
+
+- Now this package is consider **STABLE**: no more breaking changes expected.
+- Raised Dart SDK to v2.7.
+
 ## [0.1.0+1] - December 6th, 2019
 
 - Updated documentation
