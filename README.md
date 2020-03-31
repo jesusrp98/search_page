@@ -1,9 +1,9 @@
 # Search Page
 
 [![Package](https://img.shields.io/pub/v/search_page.svg?style=for-the-badge)](https://pub.dartlang.org/packages/search_page)
-[![License](https://img.shields.io/github/license/jesusrp98/search_page.svg?style=for-the-badge)](https://www.gnu.org/licenses/gpl-3.0.en.html)
+[![Build](https://img.shields.io/github/workflow/status/jesusrp98/search_page/Flutter%20Package%20CI?style=for-the-badge)](https://github.com/jesusrp98/search_page/actions)
 [![Patreon](https://img.shields.io/badge/Support-Patreon-orange.svg?style=for-the-badge)](https://www.patreon.com/jesusrp98)
-[![Stars](https://img.shields.io/github/stars/jesusrp98/search_page.svg?style=for-the-badge)](https://github.com/jesusrp98/search_page/stargazers)
+[![License](https://img.shields.io/github/license/jesusrp98/search_page.svg?style=for-the-badge)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 
 Fast and easy way to build a custom search experience in you app.
 
