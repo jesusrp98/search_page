@@ -60,7 +60,6 @@ void main() {
 
     expect(find.text('AppBar'), findsNothing);
     expect(find.text('Body'), findsNothing);
-    expect(find.text('Suggestion text'), findsOneWidget);
 
     // Check whether the text field has focus
     final TextField textField = tester.widget(find.byType(TextField));
@@ -73,7 +72,73 @@ void main() {
     // We're once again inside the Home page
     expect(find.text('AppBar'), findsOneWidget);
     expect(find.text('Body'), findsOneWidget);
+  });
+
+  testWidgets('Shows custom suggestion widget', (tester) async {
+    final _searchPage = SearchPage<String>(
+      items: _mockList,
+      suggestion: Text('Suggestion text'),
+      failure: Text('Failure text'),
+      filter: (string) => [string],
+      builder: (string) => Text(string),
+    );
+
+    await tester.pumpWidget(
+      TestPage(_searchPage),
+    );
+
+    // Entering search page
+    await tester.tap(find.byTooltip('Search'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Suggestion text'), findsOneWidget);
+
+    // If we type on the text box, this widget will dissapear
+    await tester.enterText(find.byType(TextField), 'Foo');
+    await tester.pumpAndSettle();
+
     expect(find.text('Suggestion text'), findsNothing);
+
+    // If we clean the query once again, it will reappear
+    await tester.enterText(find.byType(TextField), '');
+    await tester.pumpAndSettle();
+
+    expect(find.text('Suggestion text'), findsOneWidget);
+  });
+
+  testWidgets('Shows custom failure widget', (tester) async {
+    final _searchPage = SearchPage<String>(
+      items: _mockList,
+      suggestion: Text('Suggestion text'),
+      failure: Text('Failure text'),
+      filter: (string) => [string],
+      builder: (string) => Text(string),
+    );
+
+    await tester.pumpWidget(
+      TestPage(_searchPage),
+    );
+
+    // Entering search page
+    await tester.tap(find.byTooltip('Search'));
+    await tester.pumpAndSettle();
+
+    // At first, this widget will be hidden
+    expect(find.text('Failure text'), findsNothing);
+
+    // Types a query with no results
+    await tester.enterText(find.byType(TextField), 'Foo');
+    await tester.pumpAndSettle();
+
+    // As the query doesnt fit any result, this widget will be shown
+    expect(find.text('Failure text'), findsOneWidget);
+
+    // Clears the query
+    await tester.enterText(find.byType(TextField), '');
+    await tester.pumpAndSettle();
+
+    // This widget is hidden once again
+    expect(find.text('Failure text'), findsNothing);
   });
 
   testWidgets('Fresh search allways starts with empty query', (tester) async {
@@ -94,16 +159,12 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(_searchPage.query, '');
-    expect(find.text('Suggestion text'), findsOneWidget);
-    expect(find.text('Failure text'), findsNothing);
 
     // Search query has 'Foo'
     await tester.enterText(find.byType(TextField), 'Foo');
     await tester.pumpAndSettle();
 
     expect(_searchPage.query, 'Foo');
-    expect(find.text('Suggestion text'), findsNothing);
-    expect(find.text('Failure text'), findsOneWidget);
 
     // Search query is empty even if we go back
     await tester.tap(find.byType(BackButtonIcon));
@@ -113,8 +174,6 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(_searchPage.query, '');
-    expect(find.text('Suggestion text'), findsOneWidget);
-    expect(find.text('Failure text'), findsNothing);
   });
 
   testWidgets('Changing query shows up in search field', (tester) async {
@@ -134,21 +193,17 @@ void main() {
     await tester.tap(find.byTooltip('Search'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Suggestion text'), findsOneWidget);
-
     await tester.enterText(find.byType(TextField), 'Foo');
     await tester.pumpAndSettle();
 
     expect(find.text('Foo'), findsOneWidget);
     expect(find.text('Bar'), findsNothing);
-    expect(find.text('Suggestion text'), findsNothing);
 
     await tester.enterText(find.byType(TextField), 'Bar');
     await tester.pumpAndSettle();
 
     expect(find.text('Foo'), findsNothing);
     expect(find.text('Bar'), findsOneWidget);
-    expect(find.text('Suggestion text'), findsNothing);
   });
 
   testWidgets('Custom searchFieldLabel value', (WidgetTester tester) async {
@@ -217,9 +272,6 @@ void main() {
     await tester.tap(find.byTooltip('Search'));
     await tester.pumpAndSettle();
 
-    // Shows suggestion text
-    expect(find.text('Suggestion text'), findsOneWidget);
-
     // Typing query 'a'
     await tester.enterText(find.byType(TextField), 'a');
     await tester.pumpAndSettle();
@@ -227,39 +279,6 @@ void main() {
     // Search has been successfull
     expect(_searchPage.query, 'a');
     expect(find.text('a'), findsNWidgets(2));
-    expect(find.text('Suggestion text'), findsNothing);
-    expect(find.text('Failure text'), findsNothing);
-  });
-
-  testWidgets('Shows failure text when results are empty', (tester) async {
-    final _searchPage = SearchPage<String>(
-      items: _mockList,
-      suggestion: Text('Suggestion text'),
-      failure: Text('Failure text'),
-      filter: (string) => [string],
-      builder: (string) => Text(string),
-    );
-
-    await tester.pumpWidget(
-      TestPage(_searchPage),
-    );
-
-    // Entering search page
-    await tester.tap(find.byTooltip('Search'));
-    await tester.pumpAndSettle();
-
-    // Shows suggestion text
-    expect(find.text('Suggestion text'), findsOneWidget);
-
-    // Typing query 'Wow'
-    await tester.enterText(find.byType(TextField), 'Wow');
-    await tester.pumpAndSettle();
-
-    // Shows failure text
-    expect(_searchPage.query, 'Wow');
-    expect(find.text('Wow'), findsOneWidget);
-    expect(find.text('Suggestion text'), findsNothing);
-    expect(find.text('Failure text'), findsOneWidget);
   });
 
   testWidgets('Shows trailing clear button when writting query',
@@ -285,7 +304,6 @@ void main() {
       of: find.byIcon(Icons.clear),
       matching: find.byType(AnimatedOpacity),
     ));
-    expect(find.text('Suggestion text'), findsOneWidget);
     expect(clearButton.opacity, 0);
 
     // Typing query 'Wow'
@@ -297,8 +315,6 @@ void main() {
       of: find.byIcon(Icons.clear),
       matching: find.byType(AnimatedOpacity),
     ));
-    expect(_searchPage.query, 'Wow');
-    expect(find.text('Suggestion text'), findsNothing);
     expect(clearButton.opacity, 1);
 
     // Clears query and the clear button dissapears
@@ -309,7 +325,6 @@ void main() {
       of: find.byIcon(Icons.clear),
       matching: find.byType(AnimatedOpacity),
     ));
-    expect(find.text('Suggestion text'), findsOneWidget);
     expect(clearButton.opacity, 0);
   });
 
@@ -335,7 +350,6 @@ void main() {
       of: find.byIcon(Icons.clear),
       matching: find.byType(AnimatedOpacity),
     ));
-    expect(find.text('Suggestion text'), findsOneWidget);
     expect(clearButton.opacity, 0);
 
     // Typing query Wow
@@ -347,8 +361,6 @@ void main() {
       of: find.byIcon(Icons.clear),
       matching: find.byType(AnimatedOpacity),
     ));
-    expect(_searchPage.query, 'Wow');
-    expect(find.text('Suggestion text'), findsNothing);
     expect(clearButton.opacity, 1);
 
     // Taps clear button
@@ -359,7 +371,6 @@ void main() {
       of: find.byIcon(Icons.clear),
       matching: find.byType(AnimatedOpacity),
     ));
-    expect(find.text('Suggestion text'), findsOneWidget);
     expect(find.text('Wow'), findsNothing);
     expect(_searchPage.query, '');
     expect(clearButton.opacity, 0);
