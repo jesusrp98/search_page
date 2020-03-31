@@ -141,6 +141,30 @@ void main() {
     expect(find.text('Failure text'), findsNothing);
   });
 
+  testWidgets('Applies custom AppBar to the widget', (tester) async {
+    final _searchPage = SearchPage<String>(
+      items: _mockList,
+      suggestion: Text('Suggestion text'),
+      failure: Text('Failure text'),
+      filter: (string) => [string],
+      builder: (string) => Text(string),
+      barTheme: ThemeData(
+        primaryColor: Colors.red,
+      ),
+    );
+
+    await tester.pumpWidget(
+      TestPage(_searchPage),
+    );
+
+    // Entering search page
+    await tester.tap(find.byTooltip('Search'));
+    await tester.pumpAndSettle();
+
+    AppBar searchBar = tester.widget<AppBar>(find.byType(AppBar));
+    expect(searchBar.backgroundColor, Colors.red);
+  });
+
   testWidgets('Fresh search allways starts with empty query', (tester) async {
     final _searchPage = SearchPage<String>(
       items: _mockList,
