@@ -1,4 +1,4 @@
-name: Flutter CI
+name: Flutter Package CI
 
 on: push
 
@@ -20,7 +20,7 @@ jobs:
 
       - name: Analyzing files
         run: flutter analyze
-        
+
       - name: Analyzing package
         run: flutter pub publish --dry-run
 
