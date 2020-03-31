@@ -1,3 +1,9 @@
+## [1.1.0] - March 31st, 2020
+
+- Added a bunch of tests to this package.
+- Added GitHub Actions CI.
+- Updated minium Flutter SDK to v1.10.
+
 ## [1.0.0] - January 24th, 2020
 
 - Now this package is consider **STABLE**: no more breaking changes expected.
