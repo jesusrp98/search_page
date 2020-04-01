@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:search_page/search_page.dart';
 
-const List<String> _mockList = ['a', 'b', 'c'];
+const List<String> _mockList = ['a', 'b', 'c', 'dd', 'ee', 'ff'];
 
 class TestPage extends StatelessWidget {
   final SearchDelegate delegate;
@@ -139,6 +139,29 @@ void main() {
 
     // This widget is hidden once again
     expect(find.text('Failure text'), findsNothing);
+  });
+
+  testWidgets('Pulls correct default AppBar theme to the widget',
+      (tester) async {
+    final _searchPage = SearchPage<String>(
+      items: _mockList,
+      suggestion: Text('Suggestion text'),
+      failure: Text('Failure text'),
+      filter: (string) => [string],
+      builder: (string) => Text(string),
+    );
+
+    await tester.pumpWidget(
+      TestPage(_searchPage),
+    );
+
+    // Entering search page
+    await tester.tap(find.byTooltip('Search'));
+    await tester.pumpAndSettle();
+
+    // Default light primary color should be in place
+    AppBar searchBar = tester.widget<AppBar>(find.byType(AppBar));
+    expect(searchBar.backgroundColor.value, 4280391411);
   });
 
   testWidgets('Applies custom AppBar to the widget', (tester) async {
@@ -279,6 +302,46 @@ void main() {
     expect(find.text(searchHint), findsOneWidget);
   });
 
+  testWidgets('Filter parameter is being used', (tester) async {
+    // Added a new fiter which uses the length of the string
+    final _searchPage = SearchPage<String>(
+      items: _mockList,
+      suggestion: Text('Suggestion text'),
+      failure: Text('Failure text'),
+      filter: (string) => [
+        string,
+        string.length.toString(),
+      ],
+      builder: (string) => ListTile(title: Text(string)),
+    );
+
+    await tester.pumpWidget(
+      TestPage(_searchPage),
+    );
+
+    // Entering search page
+    await tester.tap(find.byTooltip('Search'));
+    await tester.pumpAndSettle();
+
+    // Typing query '1'
+    await tester.enterText(find.byType(TextField), '1');
+    await tester.pumpAndSettle();
+
+    expect(find.byType(ListTile), findsNWidgets(3));
+
+    // Typing query '2'
+    await tester.enterText(find.byType(TextField), '2');
+    await tester.pumpAndSettle();
+
+    expect(find.byType(ListTile), findsNWidgets(3));
+
+    // Typing query '3'
+    await tester.enterText(find.byType(TextField), '3');
+    await tester.pumpAndSettle();
+
+    expect(find.byType(ListTile), findsNothing);
+  });
+
   testWidgets('Shows results when query is correct', (tester) async {
     final _searchPage = SearchPage<String>(
       items: _mockList,
@@ -303,6 +366,63 @@ void main() {
     // Search has been successfull
     expect(_searchPage.query, 'a');
     expect(find.text('a'), findsNWidgets(2));
+  });
+
+  testWidgets('Shows results when query is capital and has blankspaces',
+      (tester) async {
+    final _searchPage = SearchPage<String>(
+      items: _mockList,
+      suggestion: Text('Suggestion text'),
+      failure: Text('Failure text'),
+      filter: (string) => [string],
+      builder: (string) => Text(string),
+    );
+
+    await tester.pumpWidget(
+      TestPage(_searchPage),
+    );
+
+    // Entering search page
+    await tester.tap(find.byTooltip('Search'));
+    await tester.pumpAndSettle();
+
+    // Typing query '  A  '
+    await tester.enterText(find.byType(TextField), '  A  ');
+    await tester.pumpAndSettle();
+
+    // Search has been successfull
+    expect(find.text('a'), findsOneWidget);
+  });
+
+  testWidgets('Builds correct custom result widgets', (tester) async {
+    final _searchPage = SearchPage<String>(
+      items: _mockList,
+      suggestion: Text('Suggestion text'),
+      failure: Text('Failure text'),
+      filter: (string) => [string],
+      builder: (string) => ListTile(title: Text(string)),
+    );
+
+    await tester.pumpWidget(
+      TestPage(_searchPage),
+    );
+
+    // Entering search page
+    await tester.tap(find.byTooltip('Search'));
+    await tester.pumpAndSettle();
+
+    // Typing query 'a'
+    await tester.enterText(find.byType(TextField), 'a');
+    await tester.pumpAndSettle();
+
+    // Looks for the custom build widget
+    expect(
+      find.ancestor(
+        of: find.text('a'),
+        matching: find.byType(ListTile),
+      ),
+      findsOneWidget,
+    );
   });
 
   testWidgets('Shows trailing clear button when writting query',
