@@ -1,3 +1,7 @@
+## [1.1.1] - April 1st, 2020
+
+- Added even more tests: full coverage!
+
 ## [1.1.0] - March 31st, 2020
 
 - Added a bunch of tests to this package.
