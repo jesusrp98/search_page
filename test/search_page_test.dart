@@ -141,28 +141,30 @@ void main() {
     expect(find.text('Failure text'), findsNothing);
   });
 
-  testWidgets('Pulls correct default AppBar theme to the widget',
-      (tester) async {
-    final _searchPage = SearchPage<String>(
-      items: _mockList,
-      suggestion: Text('Suggestion text'),
-      failure: Text('Failure text'),
-      filter: (string) => [string],
-      builder: (string) => Text(string),
-    );
+  testWidgets(
+    'Pulls correct default AppBar theme to the widget',
+    (tester) async {
+      final _searchPage = SearchPage<String>(
+        items: _mockList,
+        suggestion: Text('Suggestion text'),
+        failure: Text('Failure text'),
+        filter: (string) => [string],
+        builder: (string) => Text(string),
+      );
 
-    await tester.pumpWidget(
-      TestPage(_searchPage),
-    );
+      await tester.pumpWidget(
+        TestPage(_searchPage),
+      );
 
-    // Entering search page
-    await tester.tap(find.byTooltip('Search'));
-    await tester.pumpAndSettle();
+      // Entering search page
+      await tester.tap(find.byTooltip('Search'));
+      await tester.pumpAndSettle();
 
-    // Default light primary color should be in place
-    final searchBar = tester.widget<AppBar>(find.byType(AppBar));
-    expect(searchBar.backgroundColor.value, 4280391411);
-  });
+      // Default light primary color should be in place
+      final searchBar = tester.widget<AppBar>(find.byType(AppBar));
+      expect(searchBar.backgroundColor.value, 4280391411);
+    },
+  );
 
   testWidgets('Applies custom AppBar to the widget', (tester) async {
     final _searchPage = SearchPage<String>(
@@ -253,7 +255,7 @@ void main() {
     expect(find.text('Bar'), findsOneWidget);
   });
 
-  testWidgets('Custom searchFieldLabel value', (WidgetTester tester) async {
+  testWidgets('Custom searchFieldLabel value', (tester) async {
     const searchHint = 'custom search hint';
     final defaultSearchHint =
         const DefaultMaterialLocalizations().searchFieldLabel;
@@ -279,28 +281,30 @@ void main() {
     expect(find.text(defaultSearchHint), findsNothing);
   });
 
-  testWidgets('Default searchFieldLabel is used when it is set to null',
-      (tester) async {
-    final searchHint = const DefaultMaterialLocalizations().searchFieldLabel;
+  testWidgets(
+    'Default searchFieldLabel is used when it is set to null',
+    (tester) async {
+      final searchHint = const DefaultMaterialLocalizations().searchFieldLabel;
 
-    final _searchPage = SearchPage<String>(
-      items: _mockList,
-      suggestion: Text('Suggestion text'),
-      failure: Text('Failure text'),
-      filter: (string) => [string],
-      builder: (string) => Text(string),
-    );
+      final _searchPage = SearchPage<String>(
+        items: _mockList,
+        suggestion: Text('Suggestion text'),
+        failure: Text('Failure text'),
+        filter: (string) => [string],
+        builder: (string) => Text(string),
+      );
 
-    await tester.pumpWidget(
-      TestPage(_searchPage),
-    );
+      await tester.pumpWidget(
+        TestPage(_searchPage),
+      );
 
-    // Entering search page
-    await tester.tap(find.byTooltip('Search'));
-    await tester.pumpAndSettle();
+      // Entering search page
+      await tester.tap(find.byTooltip('Search'));
+      await tester.pumpAndSettle();
 
-    expect(find.text(searchHint), findsOneWidget);
-  });
+      expect(find.text(searchHint), findsOneWidget);
+    },
+  );
 
   testWidgets('Filter parameter is being used', (tester) async {
     // Added a new fiter which uses the length of the string
@@ -425,52 +429,54 @@ void main() {
     );
   });
 
-  testWidgets('Shows trailing clear button when writting query',
-      (tester) async {
-    final _searchPage = SearchPage<String>(
-      items: _mockList,
-      suggestion: Text('Suggestion text'),
-      failure: Text('Failure text'),
-      filter: (string) => [string],
-      builder: (string) => Text(string),
-    );
+  testWidgets(
+    'Shows trailing clear button when writting query',
+    (tester) async {
+      final _searchPage = SearchPage<String>(
+        items: _mockList,
+        suggestion: Text('Suggestion text'),
+        failure: Text('Failure text'),
+        filter: (string) => [string],
+        builder: (string) => Text(string),
+      );
 
-    await tester.pumpWidget(
-      TestPage(_searchPage),
-    );
+      await tester.pumpWidget(
+        TestPage(_searchPage),
+      );
 
-    // Entering search page
-    await tester.tap(find.byTooltip('Search'));
-    await tester.pumpAndSettle();
+      // Entering search page
+      await tester.tap(find.byTooltip('Search'));
+      await tester.pumpAndSettle();
 
-    // Shows suggestion text and a hidden clear button
-    var clearButton = tester.widget<AnimatedOpacity>(find.ancestor(
-      of: find.byIcon(Icons.clear),
-      matching: find.byType(AnimatedOpacity),
-    ));
-    expect(clearButton.opacity, 0);
+      // Shows suggestion text and a hidden clear button
+      var clearButton = tester.widget<AnimatedOpacity>(find.ancestor(
+        of: find.byIcon(Icons.clear),
+        matching: find.byType(AnimatedOpacity),
+      ));
+      expect(clearButton.opacity, 0);
 
-    // Typing query 'Wow'
-    await tester.enterText(find.byType(TextField), 'Wow');
-    await tester.pumpAndSettle();
+      // Typing query 'Wow'
+      await tester.enterText(find.byType(TextField), 'Wow');
+      await tester.pumpAndSettle();
 
-    // Shows trailling clear button
-    clearButton = tester.widget<AnimatedOpacity>(find.ancestor(
-      of: find.byIcon(Icons.clear),
-      matching: find.byType(AnimatedOpacity),
-    ));
-    expect(clearButton.opacity, 1);
+      // Shows trailling clear button
+      clearButton = tester.widget<AnimatedOpacity>(find.ancestor(
+        of: find.byIcon(Icons.clear),
+        matching: find.byType(AnimatedOpacity),
+      ));
+      expect(clearButton.opacity, 1);
 
-    // Clears query and the clear button dissapears
-    await tester.enterText(find.byType(TextField), '');
-    await tester.pumpAndSettle();
+      // Clears query and the clear button dissapears
+      await tester.enterText(find.byType(TextField), '');
+      await tester.pumpAndSettle();
 
-    clearButton = tester.widget<AnimatedOpacity>(find.ancestor(
-      of: find.byIcon(Icons.clear),
-      matching: find.byType(AnimatedOpacity),
-    ));
-    expect(clearButton.opacity, 0);
-  });
+      clearButton = tester.widget<AnimatedOpacity>(find.ancestor(
+        of: find.byIcon(Icons.clear),
+        matching: find.byType(AnimatedOpacity),
+      ));
+      expect(clearButton.opacity, 0);
+    },
+  );
 
   testWidgets('Clears query when clicking on clear button', (tester) async {
     final _searchPage = SearchPage<String>(
