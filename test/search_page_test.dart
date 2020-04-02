@@ -62,7 +62,7 @@ void main() {
     expect(find.text('Body'), findsNothing);
 
     // Check whether the text field has focus
-    final TextField textField = tester.widget(find.byType(TextField));
+    final textField = tester.widget<TextField>(find.byType(TextField));
     expect(textField.focusNode.hasFocus, isTrue);
 
     // Close search
@@ -160,7 +160,7 @@ void main() {
     await tester.pumpAndSettle();
 
     // Default light primary color should be in place
-    AppBar searchBar = tester.widget<AppBar>(find.byType(AppBar));
+    final searchBar = tester.widget<AppBar>(find.byType(AppBar));
     expect(searchBar.backgroundColor.value, 4280391411);
   });
 
@@ -184,7 +184,7 @@ void main() {
     await tester.tap(find.byTooltip('Search'));
     await tester.pumpAndSettle();
 
-    AppBar searchBar = tester.widget<AppBar>(find.byType(AppBar));
+    final searchBar = tester.widget<AppBar>(find.byType(AppBar));
     expect(searchBar.backgroundColor, Colors.red);
   });
 
@@ -444,7 +444,7 @@ void main() {
     await tester.pumpAndSettle();
 
     // Shows suggestion text and a hidden clear button
-    AnimatedOpacity clearButton = tester.widget<AnimatedOpacity>(find.ancestor(
+    var clearButton = tester.widget<AnimatedOpacity>(find.ancestor(
       of: find.byIcon(Icons.clear),
       matching: find.byType(AnimatedOpacity),
     ));
@@ -490,7 +490,7 @@ void main() {
     await tester.pumpAndSettle();
 
     // Shows suggestion text and a hidden clear button
-    AnimatedOpacity clearButton = tester.widget<AnimatedOpacity>(find.ancestor(
+    var clearButton = tester.widget<AnimatedOpacity>(find.ancestor(
       of: find.byIcon(Icons.clear),
       matching: find.byType(AnimatedOpacity),
     ));
