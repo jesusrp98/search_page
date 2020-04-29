@@ -4,7 +4,7 @@ version: 1.1.1
 homepage: https://github.com/jesusrp98/search_page
 
 environment:
-  sdk: ">=2.0.0-dev.28.0 <3.0.0"
+  sdk: ">=2.2.2 <3.0.0"
   flutter: ">=1.10.0 <2.0.0"
 
 dependencies:
