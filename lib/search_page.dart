@@ -48,11 +48,11 @@ class SearchPage<T> extends SearchDelegate<T> {
 
   /// Provided queries only matches with the begining of each
   /// string item's representation.
-  final bool queryStartsWith;
+  final bool itemStartsWith;
 
   /// Provided queries only matches with the end of each
   /// string item's representation.
-  final bool queryEndsWith;
+  final bool itemEndsWith;
 
   SearchPage({
     this.suggestion = const SizedBox(),
@@ -62,8 +62,8 @@ class SearchPage<T> extends SearchDelegate<T> {
     @required this.items,
     this.searchLabel,
     this.barTheme,
-    this.queryStartsWith = false,
-    this.queryEndsWith = false,
+    this.itemStartsWith = false,
+    this.itemEndsWith = false,
   })  : assert(suggestion != null),
         assert(failure != null),
         assert(builder != null),
@@ -137,11 +137,11 @@ class SearchPage<T> extends SearchDelegate<T> {
               // Checks wheter the [startsWith] or [endsWith] are 'true'
               .any(
             (value) {
-              if (queryStartsWith == true && queryEndsWith == true) {
+              if (itemStartsWith == true && itemEndsWith == true) {
                 return value == cleanQuery;
-              } else if (queryStartsWith == true) {
+              } else if (itemStartsWith == true) {
                 return value?.startsWith(cleanQuery) == true;
-              } else if (queryEndsWith == true) {
+              } else if (itemEndsWith == true) {
                 return value?.endsWith(cleanQuery) == true;
               } else {
                 return value?.contains(cleanQuery) == true;
