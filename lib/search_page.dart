@@ -46,6 +46,14 @@ class SearchPage<T> extends SearchDelegate<T> {
   /// the search view.
   final ThemeData barTheme;
 
+  /// Provided queries only matches with the begining of each
+  /// string item's representation.
+  final bool queryStartsWith;
+
+  /// Provided queries only matches with the end of each
+  /// string item's representation.
+  final bool queryEndsWith;
+
   SearchPage({
     this.suggestion = const SizedBox(),
     this.failure = const SizedBox(),
@@ -54,6 +62,8 @@ class SearchPage<T> extends SearchDelegate<T> {
     @required this.items,
     this.searchLabel,
     this.barTheme,
+    this.queryStartsWith = false,
+    this.queryEndsWith = false,
   })  : assert(suggestion != null),
         assert(failure != null),
         assert(builder != null),
@@ -124,7 +134,20 @@ class SearchPage<T> extends SearchDelegate<T> {
               // Then, transforms all results to lower case letters
               .map((value) => value?.toLowerCase()?.trim())
               // Finally, checks wheters any coincide with the cleaned query
-              .any((value) => value?.contains(cleanQuery) == true),
+              // Checks wheter the [startsWith] or [endsWith] are 'true'
+              .any(
+            (value) {
+              if (queryStartsWith == true && queryEndsWith == true) {
+                return value == cleanQuery;
+              } else if (queryStartsWith == true) {
+                return value?.startsWith(cleanQuery) == true;
+              } else if (queryEndsWith == true) {
+                return value?.endsWith(cleanQuery) == true;
+              } else {
+                return value?.contains(cleanQuery) == true;
+              }
+            },
+          ),
         )
         .toList();
 
