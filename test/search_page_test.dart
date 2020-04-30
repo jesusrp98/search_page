@@ -351,7 +351,47 @@ void main() {
         failure: Text('Failure text'),
         filter: (string) => [
           string,
-          string.length.toString(),
+          string?.length?.toString(),
+        ],
+        builder: (string) => ListTile(title: Text(string)),
+      );
+
+      await tester.pumpWidget(
+        TestPage(_searchPage),
+      );
+
+      // Entering search page
+      await tester.tap(find.byTooltip('Search'));
+      await tester.pumpAndSettle();
+
+      // Typing query '1'
+      await tester.enterText(find.byType(TextField), '1');
+      await tester.pumpAndSettle();
+
+      expect(find.byType(ListTile), findsNWidgets(3));
+
+      // Typing query '2'
+      await tester.enterText(find.byType(TextField), '2');
+      await tester.pumpAndSettle();
+
+      expect(find.byType(ListTile), findsNWidgets(3));
+
+      // Typing query '3'
+      await tester.enterText(find.byType(TextField), '3');
+      await tester.pumpAndSettle();
+
+      expect(find.byType(ListTile), findsNothing);
+    });
+
+    testWidgets('Null strings aren\'t an issue', (tester) async {
+      // Added a new fiter which uses the length of the string
+      final _searchPage = SearchPage<String>(
+        items: [..._mockList, null],
+        suggestion: Text('Suggestion text'),
+        failure: Text('Failure text'),
+        filter: (string) => [
+          string,
+          string?.length?.toString(),
         ],
         builder: (string) => ListTile(title: Text(string)),
       );
@@ -407,6 +447,93 @@ void main() {
       // Search has been successfull
       expect(_searchPage.query, 'a');
       expect(find.text('a'), findsNWidgets(2));
+    });
+
+    testWidgets('itemStartsWith parameter works', (tester) async {
+      final _searchPage = SearchPage<String>(
+        items: ['female', 'male', 'female'],
+        itemStartsWith: true,
+        suggestion: Text('Suggestion text'),
+        failure: Text('Failure text'),
+        filter: (string) => [string],
+        builder: (string) => Text(string),
+      );
+
+      await tester.pumpWidget(
+        TestPage(_searchPage),
+      );
+
+      // Entering search page
+      await tester.tap(find.byTooltip('Search'));
+      await tester.pumpAndSettle();
+
+      // Typing query 'male'
+      await tester.enterText(find.byType(TextField), 'mal');
+      await tester.pumpAndSettle();
+
+      // Search has been successfull
+      expect(_searchPage.query, 'mal');
+      expect(find.text('male'), findsOneWidget);
+      expect(find.text('female'), findsNothing);
+    });
+
+    testWidgets('itemEndsWith parameter works', (tester) async {
+      final _searchPage = SearchPage<String>(
+        items: ['malefe', 'male', 'malefe'],
+        itemEndsWith: true,
+        suggestion: Text('Suggestion text'),
+        failure: Text('Failure text'),
+        filter: (string) => [string],
+        builder: (string) => Text(string),
+      );
+
+      await tester.pumpWidget(
+        TestPage(_searchPage),
+      );
+
+      // Entering search page
+      await tester.tap(find.byTooltip('Search'));
+      await tester.pumpAndSettle();
+
+      // Typing query 'fe'
+      await tester.enterText(find.byType(TextField), 'fe');
+      await tester.pumpAndSettle();
+
+      // Search has been successfull
+      expect(_searchPage.query, 'fe');
+      expect(find.text('malefe'), findsNWidgets(2));
+      expect(find.text('male'), findsNothing);
+    });
+
+    testWidgets('itemStartsWith & itemEndsWith parameters works',
+        (tester) async {
+      final _searchPage = SearchPage<String>(
+        items: ['female', 'male', 'female123'],
+        itemStartsWith: true,
+        itemEndsWith: true,
+        suggestion: Text('Suggestion text'),
+        failure: Text('Failure text'),
+        filter: (string) => [string],
+        builder: (string) => Text(string),
+      );
+
+      await tester.pumpWidget(
+        TestPage(_searchPage),
+      );
+
+      // Entering search page
+      await tester.tap(find.byTooltip('Search'));
+      await tester.pumpAndSettle();
+
+      // Typing query 'female123'
+      await tester.enterText(find.byType(TextField), 'female123');
+      await tester.pumpAndSettle();
+
+      // Search has been successfull
+      expect(_searchPage.query, 'female123');
+      expect(find.text('female123'), findsNWidgets(2));
+      expect(find.text('female'), findsNothing);
+      expect(find.text('male'), findsNothing);
     });
 
     testWidgets(
