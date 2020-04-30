@@ -68,4 +68,4 @@ For help getting started with Flutter, view our [online documentation](https://f
 
 ## License
 
-This project is licensed under the GNU GPL v3 License - see the [LICENSE.md](LICENSE.md) file for details.
+This project is licensed under the GNU GPL v3 License - see the [LICENSE](LICENSE) file for details.

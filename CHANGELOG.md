@@ -1,3 +1,9 @@
+## [1.2.0] - April 30th, 2020
+
+Thanks to [@i62lucoc](https://github.com/i62lucoc) for the feedback.
+- Added `itemStartsWith` parameter.
+- Added `itemEndsWith` parameter.
+
 ## [1.1.1] - April 1st, 2020
 
 - Added even more tests: full coverage!
