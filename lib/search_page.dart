@@ -7,7 +7,7 @@ typedef ResultBuilder<T> = Widget Function(T t);
 /// It can show suggestion & unsuccessful-search widgets.
 class SearchPage<T> extends SearchDelegate<T> {
   /// Set this to true to display an empty list instead of the [suggestion].
-  final bool showEmpty;
+  final bool showListOnEmpty;
 
   /// Widget that is built when current query is empty.
   /// Suggests the user what's possible to do.
@@ -63,7 +63,7 @@ class SearchPage<T> extends SearchDelegate<T> {
     @required this.builder,
     @required this.filter,
     @required this.items,
-    this.showEmpty = false,
+    this.showListOnEmpty = false,
     this.searchLabel,
     this.barTheme,
     this.itemStartsWith = false,
@@ -73,7 +73,7 @@ class SearchPage<T> extends SearchDelegate<T> {
         assert(builder != null),
         assert(filter != null),
         assert(items != null),
-        assert(showEmpty != null),
+        assert(showListOnEmpty != null),
         super(searchFieldLabel: searchLabel);
 
   @override
@@ -158,7 +158,7 @@ class SearchPage<T> extends SearchDelegate<T> {
 
     // Builds a list with all filtered items
     // if query and result list are not empty
-    return cleanQuery.isEmpty && showEmpty == false
+    return cleanQuery.isEmpty && !showListOnEmpty
         ? suggestion
         : result.isEmpty
             ? failure
