@@ -213,8 +213,8 @@ void main() {
         final searchBar = tester.widget<AppBar>(find.byType(AppBar));
         final textField = tester.widget<TextField>(find.byType(TextField));
         expect(searchBar.backgroundColor.value, 4280391411);
-        expect(searchBar.textTheme.title.fontSize, 20);
-        expect(searchBar.textTheme.title.color, Colors.white);
+        expect(searchBar.textTheme.headline6.fontSize, 20);
+        expect(searchBar.textTheme.headline6.color, Colors.white);
         expect(textField.decoration.hintStyle.color.value, 0xb3ffffff);
         expect(textField.decoration.hintStyle.fontSize, 20);
       },
