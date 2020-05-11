@@ -1,6 +1,13 @@
+## [1.3.0] - May 11th, 2020
+
+Thanks to [@obrunsmann](https://github.com/obrunsmann) for this release.
+
+- Added `showItemsOnEmpty` parameter.
+
 ## [1.2.0] - April 30th, 2020
 
 Thanks to [@i62lucoc](https://github.com/i62lucoc) for the feedback.
+
 - Added `itemStartsWith` parameter.
 - Added `itemEndsWith` parameter.
 
