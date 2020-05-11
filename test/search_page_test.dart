@@ -143,6 +143,50 @@ void main() {
       // This widget is hidden once again
       expect(find.text('Failure text'), findsNothing);
     });
+
+    testWidgets('Shows item list at init when "showItemsOnEmpty"',
+        (tester) async {
+      final _searchPage = SearchPage<String>(
+        items: _mockList,
+        suggestion: Text('Suggestion text'),
+        showItemsOnEmpty: true,
+        failure: Text('Failure text'),
+        filter: (string) => [string],
+        builder: (string) => Text(string),
+      );
+
+      await tester.pumpWidget(
+        TestPage(_searchPage),
+      );
+
+      // Entering search page
+      await tester.tap(find.byTooltip('Search'));
+      await tester.pumpAndSettle();
+
+      // Item list is visible
+      expect(find.text('Suggestion text'), findsNothing);
+      expect(find.text('a'), findsOneWidget);
+      expect(find.text('b'), findsOneWidget);
+      expect(find.text('c'), findsOneWidget);
+      expect(find.text('dd'), findsOneWidget);
+      expect(find.text('ee'), findsOneWidget);
+      expect(find.text('ff'), findsOneWidget);
+
+      await tester.enterText(find.byType(TextField), 'Foo');
+      await tester.pumpAndSettle();
+
+      await tester.enterText(find.byType(TextField), '');
+      await tester.pumpAndSettle();
+
+      // Item list is once again shown
+      expect(find.text('Suggestion text'), findsNothing);
+      expect(find.text('a'), findsOneWidget);
+      expect(find.text('b'), findsOneWidget);
+      expect(find.text('c'), findsOneWidget);
+      expect(find.text('dd'), findsOneWidget);
+      expect(find.text('ee'), findsOneWidget);
+      expect(find.text('ff'), findsOneWidget);
+    });
   });
 
   group('Shows correct AppBar functionality', () {
