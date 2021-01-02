@@ -59,6 +59,9 @@ class SearchPage<T> extends SearchDelegate<T> {
   /// string item's representation.
   final bool itemEndsWith;
 
+  ///
+  final void Function(String) onQueryUpdate;
+
   SearchPage({
     this.suggestion = const SizedBox(),
     this.failure = const SizedBox(),
@@ -70,6 +73,7 @@ class SearchPage<T> extends SearchDelegate<T> {
     this.barTheme,
     this.itemStartsWith = false,
     this.itemEndsWith = false,
+    this.onQueryUpdate,
   })  : assert(suggestion != null),
         assert(failure != null),
         assert(builder != null),
@@ -129,6 +133,9 @@ class SearchPage<T> extends SearchDelegate<T> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
+    //
+    onQueryUpdate(query);
+
     // Deletes possible blank spaces & converts the string to lower case
     final String cleanQuery = query.toLowerCase().trim();
 
