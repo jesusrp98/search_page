@@ -1,6 +1,9 @@
 name: Flutter Package CI
 
-on: push
+on:
+  push:
+    branches:
+      - master
 
 jobs:
   flutter-ci:
