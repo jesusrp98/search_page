@@ -59,8 +59,11 @@ class SearchPage<T> extends SearchDelegate<T> {
   /// string item's representation.
   final bool itemEndsWith;
 
-  ///
+  /// Functions that gets called when the screen performs a search operation.
   final void Function(String) onQueryUpdate;
+
+  /// The style of the [searchFieldLabel] text widget.
+  final TextStyle searchStyle;
 
   SearchPage({
     this.suggestion = const SizedBox(),
@@ -74,13 +77,17 @@ class SearchPage<T> extends SearchDelegate<T> {
     this.itemStartsWith = false,
     this.itemEndsWith = false,
     this.onQueryUpdate,
+    this.searchStyle,
   })  : assert(suggestion != null),
         assert(failure != null),
         assert(builder != null),
         assert(filter != null),
         assert(items != null),
         assert(showItemsOnEmpty != null),
-        super(searchFieldLabel: searchLabel);
+        super(
+          searchFieldLabel: searchLabel,
+          searchFieldStyle: searchStyle,
+        );
 
   @override
   ThemeData appBarTheme(BuildContext context) {
@@ -133,8 +140,8 @@ class SearchPage<T> extends SearchDelegate<T> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    //
-    onQueryUpdate(query);
+    // Calles the 'onQueryUpdated' functions at the start of the operation
+    if (onQueryUpdate != null) onQueryUpdate(query);
 
     // Deletes possible blank spaces & converts the string to lower case
     final String cleanQuery = query.toLowerCase().trim();
