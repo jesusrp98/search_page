@@ -1,3 +1,11 @@
+## [1.4.0] - January 3rd, 2021
+
+Thanks to [@quaintdev](https://github.com/quaintdev) for this release.
+
+- Added `onQueryUpdate` parameter.
+- Added `searchStyle` parameter.
+- Improved pacakge test coverage.
+
 ## [1.3.0] - May 11th, 2020
 
 Thanks to [@obrunsmann](https://github.com/obrunsmann) for this release.
