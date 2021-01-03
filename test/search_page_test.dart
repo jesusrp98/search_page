@@ -37,6 +37,87 @@ class TestPage extends StatelessWidget {
 }
 
 void main() {
+  group('Test general parameter functionality', () {
+    test('Suggestion parameter cant be null', () {
+      expect(
+        () => SearchPage<String>(
+          items: _mockList,
+          failure: Text('Failure text'),
+          suggestion: null,
+          filter: (string) => [string],
+          builder: (string) => Text(string),
+        ),
+        throwsAssertionError,
+      );
+    });
+
+    test('Failure parameter cant be null', () {
+      expect(
+        () => SearchPage<String>(
+          items: _mockList,
+          failure: null,
+          suggestion: Text('Suggestion text'),
+          filter: (string) => [string],
+          builder: (string) => Text(string),
+        ),
+        throwsAssertionError,
+      );
+    });
+
+    test('Builder parameter cant be null', () {
+      expect(
+        () => SearchPage<String>(
+          items: _mockList,
+          failure: Text('Failure text'),
+          suggestion: Text('Suggestion text'),
+          filter: (string) => [string],
+          builder: null,
+        ),
+        throwsAssertionError,
+      );
+    });
+
+    test('Filter parameter cant be null', () {
+      expect(
+        () => SearchPage<String>(
+          items: _mockList,
+          failure: Text('Failure text'),
+          suggestion: Text('Suggestion text'),
+          filter: null,
+          builder: (string) => Text(string),
+        ),
+        throwsAssertionError,
+      );
+    });
+
+    test('Items parameter cant be null', () {
+      expect(
+        () => SearchPage<String>(
+          items: null,
+          failure: Text('Failure text'),
+          suggestion: Text('Suggestion text'),
+          filter: (string) => [string],
+          builder: (string) => Text(string),
+        ),
+        throwsAssertionError,
+      );
+    });
+
+    test('ShowItemsOnEmpty parameter cant be null', () {
+      expect(
+        () => SearchPage<String>(
+          items: _mockList,
+          failure: Text('Failure text'),
+          suggestion: Text('Suggestion text'),
+          filter: (string) => [string],
+          builder: (string) => Text(string),
+          showItemsOnEmpty: null,
+        ),
+        throwsAssertionError,
+      );
+    });
+  });
+
   group('General SearchPage functionality', () {
     testWidgets('Can open and close search page', (tester) async {
       final _searchPage = SearchPage<String>(
