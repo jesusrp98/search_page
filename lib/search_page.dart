@@ -93,12 +93,12 @@ class SearchPage<T> extends SearchDelegate<T> {
   ThemeData appBarTheme(BuildContext context) {
     return barTheme ??
         Theme.of(context).copyWith(
-          textTheme: TextTheme(
-            headline6: TextStyle(
-              color: Theme.of(context).primaryTextTheme.headline6.color,
-              fontSize: 20,
-            ),
-          ),
+          textTheme: Theme.of(context).textTheme.copyWith(
+                headline6: TextStyle(
+                  color: Theme.of(context).primaryTextTheme.headline6.color,
+                  fontSize: 20,
+                ),
+              ),
           inputDecorationTheme: InputDecorationTheme(
             hintStyle: TextStyle(
               color: Theme.of(context).primaryTextTheme.caption.color,
