@@ -22,7 +22,7 @@ jobs:
         run: flutter pub get
 
       - name: Analyzing files
-        run: flutter analyze
+        run: cd lib && flutter analyze
 
       - name: Analyzing package
         run: flutter pub publish --dry-run
