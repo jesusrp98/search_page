@@ -104,6 +104,12 @@ class SearchPage<T> extends SearchDelegate<T> {
               color: Theme.of(context).primaryTextTheme.caption.color,
               fontSize: 20,
             ),
+            focusedErrorBorder: InputBorder.none,
+            disabledBorder: InputBorder.none,
+            focusedBorder: InputBorder.none,
+            enabledBorder: InputBorder.none,
+            errorBorder: InputBorder.none,
+            border: InputBorder.none,
           ),
         );
   }
