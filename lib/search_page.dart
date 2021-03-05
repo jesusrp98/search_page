@@ -180,10 +180,13 @@ class SearchPage<T> extends SearchDelegate<T> {
 
     // Builds a list with all filtered items
     // if query and result list are not empty
-    return cleanQuery.isEmpty && !showItemsOnEmpty
-        ? suggestion
-        : result.isEmpty
-            ? failure
-            : ListView(children: result.map(builder).toList());
+    return Theme(
+      data: Theme.of(context),
+      child: cleanQuery.isEmpty && !showItemsOnEmpty
+          ? suggestion
+          : result.isEmpty
+              ? failure
+              : ListView(children: result.map(builder).toList()),
+    );
   }
 }
