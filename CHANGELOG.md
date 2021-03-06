@@ -1,3 +1,7 @@
+## [1.4.0+1] - March 5th, 2021
+
+- Fixed some theming conflicts introduced with Flutter v2.0.
+
 ## [1.4.0] - January 3rd, 2021
 
 Thanks to [@quaintdev](https://github.com/quaintdev) for this release.

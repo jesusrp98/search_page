@@ -12,6 +12,7 @@ class TestPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData.light(),
       home: Builder(
         builder: (context) => Scaffold(
           appBar: AppBar(
@@ -272,36 +273,6 @@ void main() {
 
   group('Shows correct AppBar functionality', () {
     testWidgets(
-      'Pulls correct default AppBar theme to the widget',
-      (tester) async {
-        final _searchPage = SearchPage<String>(
-          items: _mockList,
-          suggestion: Text('Suggestion text'),
-          failure: Text('Failure text'),
-          filter: (string) => [string],
-          builder: (string) => Text(string),
-        );
-
-        await tester.pumpWidget(
-          TestPage(_searchPage),
-        );
-
-        // Entering search page
-        await tester.tap(find.byTooltip('Search'));
-        await tester.pumpAndSettle();
-
-        // Default light primary color should be in place
-        final searchBar = tester.widget<AppBar>(find.byType(AppBar));
-        final textField = tester.widget<TextField>(find.byType(TextField));
-        expect(searchBar.backgroundColor.value, 4280391411);
-        expect(searchBar.textTheme.headline6.fontSize, 20);
-        expect(searchBar.textTheme.headline6.color, Colors.white);
-        expect(textField.decoration.hintStyle.color.value, 0xb3ffffff);
-        expect(textField.decoration.hintStyle.fontSize, 20);
-      },
-    );
-
-    testWidgets(
       'Renders back button correctly',
       (tester) async {
         final _searchPage = SearchPage<String>(
@@ -324,30 +295,6 @@ void main() {
         expect(find.byType(BackButtonIcon), findsOneWidget);
       },
     );
-
-    testWidgets('Applies custom AppBar to the widget', (tester) async {
-      final _searchPage = SearchPage<String>(
-        items: _mockList,
-        suggestion: Text('Suggestion text'),
-        failure: Text('Failure text'),
-        filter: (string) => [string],
-        builder: (string) => Text(string),
-        barTheme: ThemeData(
-          primaryColor: Colors.red,
-        ),
-      );
-
-      await tester.pumpWidget(
-        TestPage(_searchPage),
-      );
-
-      // Entering search page
-      await tester.tap(find.byTooltip('Search'));
-      await tester.pumpAndSettle();
-
-      final searchBar = tester.widget<AppBar>(find.byType(AppBar));
-      expect(searchBar.backgroundColor, Colors.red);
-    });
 
     testWidgets('Fresh search allways starts with empty query', (tester) async {
       final _searchPage = SearchPage<String>(
