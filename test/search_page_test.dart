@@ -22,9 +22,9 @@ class TestPage extends StatelessWidget {
                 tooltip: 'Search',
                 icon: Icon(Icons.search),
                 onPressed: () async {
-                  showSearch<String>(
+                  showSearch<String?>(
                     context: context,
-                    delegate: delegate,
+                    delegate: delegate as SearchDelegate<String?>,
                   );
                 },
               ),
@@ -38,87 +38,6 @@ class TestPage extends StatelessWidget {
 }
 
 void main() {
-  group('Test general parameter functionality', () {
-    test('Suggestion parameter cant be null', () {
-      expect(
-        () => SearchPage<String>(
-          items: _mockList,
-          failure: Text('Failure text'),
-          suggestion: null,
-          filter: (string) => [string],
-          builder: (string) => Text(string),
-        ),
-        throwsAssertionError,
-      );
-    });
-
-    test('Failure parameter cant be null', () {
-      expect(
-        () => SearchPage<String>(
-          items: _mockList,
-          failure: null,
-          suggestion: Text('Suggestion text'),
-          filter: (string) => [string],
-          builder: (string) => Text(string),
-        ),
-        throwsAssertionError,
-      );
-    });
-
-    test('Builder parameter cant be null', () {
-      expect(
-        () => SearchPage<String>(
-          items: _mockList,
-          failure: Text('Failure text'),
-          suggestion: Text('Suggestion text'),
-          filter: (string) => [string],
-          builder: null,
-        ),
-        throwsAssertionError,
-      );
-    });
-
-    test('Filter parameter cant be null', () {
-      expect(
-        () => SearchPage<String>(
-          items: _mockList,
-          failure: Text('Failure text'),
-          suggestion: Text('Suggestion text'),
-          filter: null,
-          builder: (string) => Text(string),
-        ),
-        throwsAssertionError,
-      );
-    });
-
-    test('Items parameter cant be null', () {
-      expect(
-        () => SearchPage<String>(
-          items: null,
-          failure: Text('Failure text'),
-          suggestion: Text('Suggestion text'),
-          filter: (string) => [string],
-          builder: (string) => Text(string),
-        ),
-        throwsAssertionError,
-      );
-    });
-
-    test('ShowItemsOnEmpty parameter cant be null', () {
-      expect(
-        () => SearchPage<String>(
-          items: _mockList,
-          failure: Text('Failure text'),
-          suggestion: Text('Suggestion text'),
-          filter: (string) => [string],
-          builder: (string) => Text(string),
-          showItemsOnEmpty: null,
-        ),
-        throwsAssertionError,
-      );
-    });
-  });
-
   group('General SearchPage functionality', () {
     testWidgets('Can open and close search page', (tester) async {
       final _searchPage = SearchPage<String>(
@@ -146,7 +65,7 @@ void main() {
 
       // Check whether the text field has focus
       final textField = tester.widget<TextField>(find.byType(TextField));
-      expect(textField.focusNode.hasFocus, isTrue);
+      expect(textField.focusNode!.hasFocus, isTrue);
 
       // Close search
       await tester.tap(find.byType(BackButtonIcon));
@@ -423,7 +342,7 @@ void main() {
         failure: Text('Failure text'),
         filter: (string) => [
           string,
-          string?.length?.toString(),
+          string.length.toString(),
         ],
         builder: (string) => ListTile(title: Text(string)),
       );
@@ -457,15 +376,15 @@ void main() {
 
     testWidgets('Null strings aren\'t an issue', (tester) async {
       // Added a new fiter which uses the length of the string
-      final _searchPage = SearchPage<String>(
+      final _searchPage = SearchPage<String?>(
         items: [..._mockList, null],
         suggestion: Text('Suggestion text'),
         failure: Text('Failure text'),
         filter: (string) => [
           string,
-          string?.length?.toString(),
+          string?.length.toString(),
         ],
-        builder: (string) => ListTile(title: Text(string)),
+        builder: (string) => ListTile(title: Text(string!)),
       );
 
       await tester.pumpWidget(

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-typedef SearchFilter<T> = List<String> Function(T t);
+typedef SearchFilter<T> = List<String?> Function(T t);
 typedef ResultBuilder<T> = Widget Function(T t);
 
 /// This class helps to implement a search view, using [SearchDelegate].
 /// It can show suggestion & unsuccessful-search widgets.
-class SearchPage<T> extends SearchDelegate<T> {
+class SearchPage<T> extends SearchDelegate<T?> {
   /// Set this to true to display the complete list instead of the [suggestion].
   /// This is useful to give your users the chance to explore all the items in the
   /// list without knowing what so search for.
@@ -41,7 +41,7 @@ class SearchPage<T> extends SearchDelegate<T> {
 
   /// This text will be shown in the [AppBar] when
   /// current query is empty.
-  final String searchLabel;
+  final String? searchLabel;
 
   /// List of items where the search is going to take place on.
   /// They have [T] on run time.
@@ -49,7 +49,7 @@ class SearchPage<T> extends SearchDelegate<T> {
 
   /// Theme that would be used in the [AppBar] widget, inside
   /// the search view.
-  final ThemeData barTheme;
+  final ThemeData? barTheme;
 
   /// Provided queries only matches with the begining of each
   /// string item's representation.
@@ -60,17 +60,17 @@ class SearchPage<T> extends SearchDelegate<T> {
   final bool itemEndsWith;
 
   /// Functions that gets called when the screen performs a search operation.
-  final void Function(String) onQueryUpdate;
+  final void Function(String)? onQueryUpdate;
 
   /// The style of the [searchFieldLabel] text widget.
-  final TextStyle searchStyle;
+  final TextStyle? searchStyle;
 
   SearchPage({
     this.suggestion = const SizedBox(),
     this.failure = const SizedBox(),
-    @required this.builder,
-    @required this.filter,
-    @required this.items,
+    required this.builder,
+    required this.filter,
+    required this.items,
     this.showItemsOnEmpty = false,
     this.searchLabel,
     this.barTheme,
@@ -78,13 +78,7 @@ class SearchPage<T> extends SearchDelegate<T> {
     this.itemEndsWith = false,
     this.onQueryUpdate,
     this.searchStyle,
-  })  : assert(suggestion != null),
-        assert(failure != null),
-        assert(builder != null),
-        assert(filter != null),
-        assert(items != null),
-        assert(showItemsOnEmpty != null),
-        super(
+  }) : super(
           searchFieldLabel: searchLabel,
           searchFieldStyle: searchStyle,
         );
@@ -95,13 +89,13 @@ class SearchPage<T> extends SearchDelegate<T> {
         Theme.of(context).copyWith(
           textTheme: Theme.of(context).textTheme.copyWith(
                 headline6: TextStyle(
-                  color: Theme.of(context).primaryTextTheme.headline6.color,
+                  color: Theme.of(context).primaryTextTheme.headline6!.color,
                   fontSize: 20,
                 ),
               ),
           inputDecorationTheme: InputDecorationTheme(
             hintStyle: TextStyle(
-              color: Theme.of(context).primaryTextTheme.caption.color,
+              color: Theme.of(context).primaryTextTheme.caption!.color,
               fontSize: 20,
             ),
             focusedErrorBorder: InputBorder.none,
@@ -147,7 +141,7 @@ class SearchPage<T> extends SearchDelegate<T> {
   @override
   Widget buildSuggestions(BuildContext context) {
     // Calles the 'onQueryUpdated' functions at the start of the operation
-    if (onQueryUpdate != null) onQueryUpdate(query);
+    if (onQueryUpdate != null) onQueryUpdate!(query);
 
     // Deletes possible blank spaces & converts the string to lower case
     final String cleanQuery = query.toLowerCase().trim();
@@ -159,7 +153,7 @@ class SearchPage<T> extends SearchDelegate<T> {
           // First we collect all [String] representation of each [item]
           (item) => filter(item)
               // Then, transforms all results to lower case letters
-              .map((value) => value?.toLowerCase()?.trim())
+              .map((value) => value?.toLowerCase().trim())
               // Finally, checks wheters any coincide with the cleaned query
               // Checks wheter the [startsWith] or [endsWith] are 'true'
               .any(
