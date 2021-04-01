@@ -1,3 +1,7 @@
+## [2.0.0] - April 1st, 2021
+
+* Migrated to null-safety.
+
 ## [1.4.0+1] - March 5th, 2021
 
 - Fixed some theming conflicts introduced with Flutter v2.0.
