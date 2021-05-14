@@ -1,6 +1,6 @@
 name: search_page
 description: Fast and easy way to build a custom search experience in you app
-version: 2.0.0
+version: 2.0.0+1
 homepage: https://github.com/jesusrp98/search_page
 
 environment:

@@ -14,6 +14,12 @@ One of the special features of this package is the `filter` parameter. It's a ve
 
 Also, you can customize suggestion and on-error widgets, provide custom search filters, change AppBar's theme...
 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/jesusrp98/search_page/master/screenshots/0.png" width="256" hspace="4">
+  <img src="https://raw.githubusercontent.com/jesusrp98/search_page/master/screenshots/1.png" width="256" hspace="4">
+  <img src="https://raw.githubusercontent.com/jesusrp98/search_page/master/screenshots/2.png" width="256" hspace="4">
+</p>
+
 ## Example
 
 Here is a example on how to use this package. You'd need to call the `SearchPage` class using the `showSearch` function built in.
