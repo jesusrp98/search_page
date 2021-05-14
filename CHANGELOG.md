@@ -1,4 +1,4 @@
-## [2.0.0] - April 1st, 2021
+## [2.0.0+1] - April 1st, 2021
 
 * Migrated to null-safety.
 
