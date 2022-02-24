@@ -65,6 +65,12 @@ class SearchPage<T> extends SearchDelegate<T?> {
   /// The style of the [searchFieldLabel] text widget.
   final TextStyle? searchStyle;
 
+  /// The label for the 'back' button that the Screen Reader will read
+  final String? backButtonSemanticLabel;
+
+  /// The label for the 'clear' button that the Screen Reader will read
+  final String? clearButtonSemanticLabel;
+
   SearchPage({
     this.suggestion = const SizedBox(),
     this.failure = const SizedBox(),
@@ -78,6 +84,8 @@ class SearchPage<T> extends SearchDelegate<T?> {
     this.itemEndsWith = false,
     this.onQueryUpdate,
     this.searchStyle,
+    this.backButtonSemanticLabel,
+    this.clearButtonSemanticLabel,
   }) : super(
           searchFieldLabel: searchLabel,
           searchFieldStyle: searchStyle,
@@ -110,6 +118,9 @@ class SearchPage<T> extends SearchDelegate<T?> {
 
   @override
   List<Widget> buildActions(BuildContext context) {
+    // The default value for the 'clear' button semantic label 
+    final String defaultClearButtonSemanticLabel = 'Clear';
+
     // Builds a 'clear' button at the end of the [AppBar]
     return [
       AnimatedOpacity(
@@ -117,7 +128,10 @@ class SearchPage<T> extends SearchDelegate<T?> {
         duration: Duration(milliseconds: 200),
         curve: Curves.easeInOutCubic,
         child: IconButton(
-          icon: Icon(Icons.clear),
+          icon: Icon(
+            Icons.clear,
+            semanticLabel: clearButtonSemanticLabel ?? defaultClearButtonSemanticLabel,
+          ),
           onPressed: () => query = '',
         ),
       )
@@ -126,10 +140,14 @@ class SearchPage<T> extends SearchDelegate<T?> {
 
   @override
   Widget buildLeading(BuildContext context) {
+    // Gets the value from the predefined Back Button label
+    final String defaultBackButtonSemanticLabel = MaterialLocalizations.of(context).backButtonTooltip;
+
     // Creates a default back button as the leading widget.
     // It's aware of targeted platform.
     // Used to close the view.
     return IconButton(
+      tooltip: backButtonSemanticLabel ?? defaultBackButtonSemanticLabel,
       icon: const BackButtonIcon(),
       onPressed: () => close(context, null),
     );
