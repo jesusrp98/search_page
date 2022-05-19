@@ -183,9 +183,7 @@ class SearchPage<T> extends SearchDelegate<T?> {
           ? suggestion
           : result.isEmpty
               ? failure
-              : searchHintWidget == const SizedBox()
-                  ? ListView(children: result.map(builder).toList())
-                  : SingleChildScrollView(
+              : SingleChildScrollView(
                       child: Column(
                         children: [
                           searchHintWidget,
