@@ -19,6 +19,8 @@ class SearchPage<T> extends SearchDelegate<T?> {
   /// matches current query.
   final Widget failure;
 
+  final Widget searchHintWidget;
+
   /// Method that builds a widget for each item that matches
   /// the current query parameter entered by the user.
   ///
@@ -71,6 +73,7 @@ class SearchPage<T> extends SearchDelegate<T?> {
     required this.builder,
     required this.filter,
     required this.items,
+    this.searchHintWidget = const SizedBox(),
     this.showItemsOnEmpty = false,
     this.searchLabel,
     this.barTheme,
@@ -180,7 +183,19 @@ class SearchPage<T> extends SearchDelegate<T?> {
           ? suggestion
           : result.isEmpty
               ? failure
-              : ListView(children: result.map(builder).toList()),
+              : searchHintWidget == const SizedBox()
+                  ? ListView(children: result.map(builder).toList())
+                  : SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          searchHintWidget,
+                          ListView(
+                              shrinkWrap: true,
+                              physics: NeverScrollableScrollPhysics(),
+                              children: result.map(builder).toList())
+                        ],
+                      ),
+                    ),
     );
   }
 }
