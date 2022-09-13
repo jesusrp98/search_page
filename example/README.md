@@ -1,85 +1,16 @@
-```
-import 'package:flutter/material.dart';
-import 'package:search_page/search_page.dart';
+# example
 
-/// This is a very simple class, used to
-/// demo the `SearchPage` package
-class Person {
-  final String name, surname;
-  final num age;
+A new Flutter project.
 
-  Person(this.name, this.surname, this.age);
-}
+## Getting Started
 
-void main() => runApp(MyApp());
+This project is a starting point for a Flutter application.
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'search_page',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(),
-    );
-  }
-}
+A few resources to get you started if this is your first Flutter project:
 
-class MyHomePage extends StatelessWidget {
-  static List<Person> people = [
-    Person('Mike', 'Barron', 64),
-    Person('Todd', 'Black', 30),
-    Person('Ahmad', 'Edwards', 55),
-    Person('Anthony', 'Johnson', 67),
-    Person('Annette', 'Brooks', 39),
-  ];
+- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
+- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Search Page'),
-      ),
-      body: ListView.builder(
-        itemCount: people.length,
-        itemBuilder: (context, index) {
-          final Person person = people[index];
-          return ListTile(
-            title: Text(person.name),
-            subtitle: Text(person.surname),
-            trailing: Text('${person.age} yo'),
-          );
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        tooltip: 'Search people',
-        onPressed: () => showSearch(
-          context: context,
-          delegate: SearchPage<Person>(
-            items: people,
-            searchLabel: 'Search people',
-            suggestion: Center(
-              child: Text('Filter people by name, surname or age'),
-            ),
-            failure: Center(
-              child: Text('No person found :('),
-            ),
-            filter: (person) => [
-              person.name,
-              person.surname,
-              person.age.toString(),
-            ],
-            builder: (person) => ListTile(
-              title: Text(person.name),
-              subtitle: Text(person.surname),
-              trailing: Text('${person.age} yo'),
-            ),
-          ),
-        ),
-        child: Icon(Icons.search),
-      ),
-    );
-  }
-}
-```
+For help getting started with Flutter development, view the
+[online documentation](https://docs.flutter.dev/), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.

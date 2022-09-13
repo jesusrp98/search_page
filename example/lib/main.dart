@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:search_page/search_page.dart';
 
@@ -7,12 +9,14 @@ class Person {
   final String name, surname;
   final num age;
 
-  Person(this.name, this.surname, this.age);
+  const Person(this.name, this.surname, this.age);
 }
 
-void main() => runApp(MyApp());
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -20,13 +24,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(),
+      home: const MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatelessWidget {
-  static List<Person> people = [
+  static const people = [
     Person('Mike', 'Barron', 64),
     Person('Todd', 'Black', 30),
     Person('Ahmad', 'Edwards', 55),
@@ -34,16 +38,19 @@ class MyHomePage extends StatelessWidget {
     Person('Annette', 'Brooks', 39),
   ];
 
+  const MyHomePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Search Page'),
+        title: const Text('Search Page'),
       ),
       body: ListView.builder(
         itemCount: people.length,
         itemBuilder: (context, index) {
-          final Person person = people[index];
+          final person = people[index];
+
           return ListTile(
             title: Text(person.name),
             subtitle: Text(person.surname),
@@ -55,14 +62,14 @@ class MyHomePage extends StatelessWidget {
         tooltip: 'Search people',
         onPressed: () => showSearch(
           context: context,
-          delegate: SearchPage<Person>(
-            onQueryUpdate: (s) => print(s),
+          delegate: SearchPage(
+            onQueryUpdate: print,
             items: people,
             searchLabel: 'Search people',
-            suggestion: Center(
+            suggestion: const Center(
               child: Text('Filter people by name, surname or age'),
             ),
-            failure: Center(
+            failure: const Center(
               child: Text('No person found :('),
             ),
             filter: (person) => [
@@ -77,7 +84,7 @@ class MyHomePage extends StatelessWidget {
             ),
           ),
         ),
-        child: Icon(Icons.search),
+        child: const Icon(Icons.search),
       ),
     );
   }

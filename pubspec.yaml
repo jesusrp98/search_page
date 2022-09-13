@@ -1,10 +1,11 @@
 name: search_page
 description: Fast and easy way to build a custom search experience in you app
-version: 2.0.0+1
+version: 2.1.0
 homepage: https://github.com/jesusrp98/search_page
 
 environment:
-  sdk: '>=2.12.0 <3.0.0'
+  flutter: '>=3.3.0'
+  sdk: '>=2.18.0 <3.0.0'
 
 dependencies:
   flutter:
@@ -13,3 +14,4 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_lints: ^2.0.0

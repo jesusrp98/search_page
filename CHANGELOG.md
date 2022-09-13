@@ -1,3 +1,7 @@
+## [2.1.0] - September 13rd, 2022
+
+- **BREAKING CHANGE:** Set min Flutter version to 3.3.0.
+
 ## [2.0.0+1] - April 1st, 2021
 
 * Migrated to null-safety.

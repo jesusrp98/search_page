@@ -60,7 +60,7 @@ class SearchPage<T> extends SearchDelegate<T?> {
   final bool itemEndsWith;
 
   /// Functions that gets called when the screen performs a search operation.
-  final void Function(String)? onQueryUpdate;
+  final ValueChanged<String>? onQueryUpdate;
 
   /// The style of the [searchFieldLabel] text widget.
   final TextStyle? searchStyle;
@@ -89,13 +89,13 @@ class SearchPage<T> extends SearchDelegate<T?> {
         Theme.of(context).copyWith(
           textTheme: Theme.of(context).textTheme.copyWith(
                 headline6: TextStyle(
-                  color: Theme.of(context).primaryTextTheme.headline6!.color,
+                  color: Theme.of(context).primaryTextTheme.headline6?.color,
                   fontSize: 20,
                 ),
               ),
           inputDecorationTheme: InputDecorationTheme(
             hintStyle: TextStyle(
-              color: Theme.of(context).primaryTextTheme.caption!.color,
+              color: Theme.of(context).primaryTextTheme.caption?.color,
               fontSize: 20,
             ),
             focusedErrorBorder: InputBorder.none,
@@ -114,10 +114,10 @@ class SearchPage<T> extends SearchDelegate<T?> {
     return [
       AnimatedOpacity(
         opacity: query.isNotEmpty ? 1.0 : 0.0,
-        duration: Duration(milliseconds: 200),
+        duration: kThemeAnimationDuration,
         curve: Curves.easeInOutCubic,
         child: IconButton(
-          icon: Icon(Icons.clear),
+          icon: const Icon(Icons.clear),
           onPressed: () => query = '',
         ),
       )
@@ -144,11 +144,11 @@ class SearchPage<T> extends SearchDelegate<T?> {
     if (onQueryUpdate != null) onQueryUpdate!(query);
 
     // Deletes possible blank spaces & converts the string to lower case
-    final String cleanQuery = query.toLowerCase().trim();
+    final cleanQuery = query.toLowerCase().trim();
 
     // Using the [filter] method, filters through the [items] list
     // in order to select matching items
-    final List<T> result = items
+    final result = items
         .where(
           // First we collect all [String] representation of each [item]
           (item) => filter(item)
@@ -160,13 +160,14 @@ class SearchPage<T> extends SearchDelegate<T?> {
             (value) {
               if (itemStartsWith == true && itemEndsWith == true) {
                 return value == cleanQuery;
-              } else if (itemStartsWith == true) {
-                return value?.startsWith(cleanQuery) == true;
-              } else if (itemEndsWith == true) {
-                return value?.endsWith(cleanQuery) == true;
-              } else {
-                return value?.contains(cleanQuery) == true;
               }
+              if (itemStartsWith == true) {
+                return value?.startsWith(cleanQuery) == true;
+              }
+              if (itemEndsWith == true) {
+                return value?.endsWith(cleanQuery) == true;
+              }
+              return value?.contains(cleanQuery) == true;
             },
           ),
         )
@@ -174,13 +175,12 @@ class SearchPage<T> extends SearchDelegate<T?> {
 
     // Builds a list with all filtered items
     // if query and result list are not empty
-    return Theme(
-      data: Theme.of(context),
-      child: cleanQuery.isEmpty && !showItemsOnEmpty
-          ? suggestion
-          : result.isEmpty
-              ? failure
-              : ListView(children: result.map(builder).toList()),
-    );
+    return cleanQuery.isEmpty && !showItemsOnEmpty
+        ? suggestion
+        : result.isEmpty
+            ? failure
+            : ListView(
+                children: result.map(builder).toList(),
+              );
   }
 }

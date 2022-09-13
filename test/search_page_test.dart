@@ -7,7 +7,7 @@ const List<String> _mockList = ['a', 'b', 'c', 'dd', 'ee', 'ff'];
 class TestPage extends StatelessWidget {
   final SearchDelegate delegate;
 
-  const TestPage(this.delegate);
+  const TestPage(this.delegate, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,11 +16,11 @@ class TestPage extends StatelessWidget {
       home: Builder(
         builder: (context) => Scaffold(
           appBar: AppBar(
-            title: Text('AppBar'),
-            actions: <Widget>[
+            title: const Text('AppBar'),
+            actions: [
               IconButton(
                 tooltip: 'Search',
-                icon: Icon(Icons.search),
+                icon: const Icon(Icons.search),
                 onPressed: () async {
                   showSearch<String?>(
                     context: context,
@@ -30,7 +30,7 @@ class TestPage extends StatelessWidget {
               ),
             ],
           ),
-          body: Text('Body'),
+          body: const Text('Body'),
         ),
       ),
     );
@@ -40,16 +40,16 @@ class TestPage extends StatelessWidget {
 void main() {
   group('General SearchPage functionality', () {
     testWidgets('Can open and close search page', (tester) async {
-      final _searchPage = SearchPage<String>(
+      final searchPage = SearchPage<String>(
         items: _mockList,
-        suggestion: Text('Suggestion text'),
-        failure: Text('Failure text'),
+        suggestion: const Text('Suggestion text'),
+        failure: const Text('Failure text'),
         filter: (string) => [string],
         builder: (string) => Text(string),
       );
 
       await tester.pumpWidget(
-        TestPage(_searchPage),
+        TestPage(searchPage),
       );
 
       // We are on the homepage
@@ -79,16 +79,16 @@ void main() {
 
   group('Shows custom information widgets', () {
     testWidgets('Shows custom suggestion widget', (tester) async {
-      final _searchPage = SearchPage<String>(
+      final searchPage = SearchPage<String>(
         items: _mockList,
-        suggestion: Text('Suggestion text'),
-        failure: Text('Failure text'),
+        suggestion: const Text('Suggestion text'),
+        failure: const Text('Failure text'),
         filter: (string) => [string],
         builder: (string) => Text(string),
       );
 
       await tester.pumpWidget(
-        TestPage(_searchPage),
+        TestPage(searchPage),
       );
 
       // Entering search page
@@ -111,16 +111,16 @@ void main() {
     });
 
     testWidgets('Shows custom failure widget', (tester) async {
-      final _searchPage = SearchPage<String>(
+      final searchPage = SearchPage<String>(
         items: _mockList,
-        suggestion: Text('Suggestion text'),
-        failure: Text('Failure text'),
+        suggestion: const Text('Suggestion text'),
+        failure: const Text('Failure text'),
         filter: (string) => [string],
         builder: (string) => Text(string),
       );
 
       await tester.pumpWidget(
-        TestPage(_searchPage),
+        TestPage(searchPage),
       );
 
       // Entering search page
@@ -147,17 +147,17 @@ void main() {
 
     testWidgets('Shows item list at init when "showItemsOnEmpty"',
         (tester) async {
-      final _searchPage = SearchPage<String>(
+      final searchPage = SearchPage<String>(
         items: _mockList,
-        suggestion: Text('Suggestion text'),
+        suggestion: const Text('Suggestion text'),
         showItemsOnEmpty: true,
-        failure: Text('Failure text'),
+        failure: const Text('Failure text'),
         filter: (string) => [string],
         builder: (string) => Text(string),
       );
 
       await tester.pumpWidget(
-        TestPage(_searchPage),
+        TestPage(searchPage),
       );
 
       // Entering search page
@@ -194,16 +194,16 @@ void main() {
     testWidgets(
       'Renders back button correctly',
       (tester) async {
-        final _searchPage = SearchPage<String>(
+        final searchPage = SearchPage<String>(
           items: _mockList,
-          suggestion: Text('Suggestion text'),
-          failure: Text('Failure text'),
+          suggestion: const Text('Suggestion text'),
+          failure: const Text('Failure text'),
           filter: (string) => [string],
           builder: (string) => Text(string),
         );
 
         await tester.pumpWidget(
-          TestPage(_searchPage),
+          TestPage(searchPage),
         );
 
         // Entering search page
@@ -216,29 +216,29 @@ void main() {
     );
 
     testWidgets('Fresh search allways starts with empty query', (tester) async {
-      final _searchPage = SearchPage<String>(
+      final searchPage = SearchPage<String>(
         items: _mockList,
-        suggestion: Text('Suggestion text'),
-        failure: Text('Failure text'),
+        suggestion: const Text('Suggestion text'),
+        failure: const Text('Failure text'),
         filter: (string) => [string],
         builder: (string) => Text(string),
       );
 
       await tester.pumpWidget(
-        TestPage(_searchPage),
+        TestPage(searchPage),
       );
 
       // Search query is empty when entering search page
       await tester.tap(find.byTooltip('Search'));
       await tester.pumpAndSettle();
 
-      expect(_searchPage.query, '');
+      expect(searchPage.query, '');
 
       // Search query has 'Foo'
       await tester.enterText(find.byType(TextField), 'Foo');
       await tester.pumpAndSettle();
 
-      expect(_searchPage.query, 'Foo');
+      expect(searchPage.query, 'Foo');
 
       // Search query is empty even if we go back
       await tester.tap(find.byType(BackButtonIcon));
@@ -247,20 +247,20 @@ void main() {
       await tester.tap(find.byTooltip('Search'));
       await tester.pumpAndSettle();
 
-      expect(_searchPage.query, '');
+      expect(searchPage.query, '');
     });
 
     testWidgets('Changing query shows up in search field', (tester) async {
-      final _searchPage = SearchPage<String>(
+      final searchPage = SearchPage<String>(
         items: _mockList,
-        suggestion: Text('Suggestion text'),
-        failure: Text('Failure text'),
+        suggestion: const Text('Suggestion text'),
+        failure: const Text('Failure text'),
         filter: (string) => [string],
         builder: (string) => Text(string),
       );
 
       await tester.pumpWidget(
-        TestPage(_searchPage),
+        TestPage(searchPage),
       );
 
       // Entering search page
@@ -285,17 +285,17 @@ void main() {
       final defaultSearchHint =
           const DefaultMaterialLocalizations().searchFieldLabel;
 
-      final _searchPage = SearchPage<String>(
+      final searchPage = SearchPage<String>(
         items: _mockList,
-        suggestion: Text('Suggestion text'),
-        failure: Text('Failure text'),
+        suggestion: const Text('Suggestion text'),
+        failure: const Text('Failure text'),
         filter: (string) => [string],
         builder: (string) => Text(string),
         searchLabel: searchHint,
       );
 
       await tester.pumpWidget(
-        TestPage(_searchPage),
+        TestPage(searchPage),
       );
 
       // Entering search page
@@ -312,16 +312,16 @@ void main() {
         final searchHint =
             const DefaultMaterialLocalizations().searchFieldLabel;
 
-        final _searchPage = SearchPage<String>(
+        final searchPage = SearchPage<String>(
           items: _mockList,
-          suggestion: Text('Suggestion text'),
-          failure: Text('Failure text'),
+          suggestion: const Text('Suggestion text'),
+          failure: const Text('Failure text'),
           filter: (string) => [string],
           builder: (string) => Text(string),
         );
 
         await tester.pumpWidget(
-          TestPage(_searchPage),
+          TestPage(searchPage),
         );
 
         // Entering search page
@@ -336,10 +336,10 @@ void main() {
   group('Shows correct filtered search functionality', () {
     testWidgets('Filter parameter is being used', (tester) async {
       // Added a new fiter which uses the length of the string
-      final _searchPage = SearchPage<String>(
+      final searchPage = SearchPage<String>(
         items: _mockList,
-        suggestion: Text('Suggestion text'),
-        failure: Text('Failure text'),
+        suggestion: const Text('Suggestion text'),
+        failure: const Text('Failure text'),
         filter: (string) => [
           string,
           string.length.toString(),
@@ -348,7 +348,7 @@ void main() {
       );
 
       await tester.pumpWidget(
-        TestPage(_searchPage),
+        TestPage(searchPage),
       );
 
       // Entering search page
@@ -376,10 +376,10 @@ void main() {
 
     testWidgets('Null strings aren\'t an issue', (tester) async {
       // Added a new fiter which uses the length of the string
-      final _searchPage = SearchPage<String?>(
+      final searchPage = SearchPage<String?>(
         items: [..._mockList, null],
-        suggestion: Text('Suggestion text'),
-        failure: Text('Failure text'),
+        suggestion: const Text('Suggestion text'),
+        failure: const Text('Failure text'),
         filter: (string) => [
           string,
           string?.length.toString(),
@@ -388,7 +388,7 @@ void main() {
       );
 
       await tester.pumpWidget(
-        TestPage(_searchPage),
+        TestPage(searchPage),
       );
 
       // Entering search page
@@ -415,16 +415,16 @@ void main() {
     });
 
     testWidgets('Shows results when query is correct', (tester) async {
-      final _searchPage = SearchPage<String>(
+      final searchPage = SearchPage<String>(
         items: _mockList,
-        suggestion: Text('Suggestion text'),
-        failure: Text('Failure text'),
+        suggestion: const Text('Suggestion text'),
+        failure: const Text('Failure text'),
         filter: (string) => [string],
         builder: (string) => Text(string),
       );
 
       await tester.pumpWidget(
-        TestPage(_searchPage),
+        TestPage(searchPage),
       );
 
       // Entering search page
@@ -436,22 +436,22 @@ void main() {
       await tester.pumpAndSettle();
 
       // Search has been successfull
-      expect(_searchPage.query, 'a');
+      expect(searchPage.query, 'a');
       expect(find.text('a'), findsNWidgets(2));
     });
 
     testWidgets('itemStartsWith parameter works', (tester) async {
-      final _searchPage = SearchPage<String>(
+      final searchPage = SearchPage<String>(
         items: ['female', 'male', 'female'],
         itemStartsWith: true,
-        suggestion: Text('Suggestion text'),
-        failure: Text('Failure text'),
+        suggestion: const Text('Suggestion text'),
+        failure: const Text('Failure text'),
         filter: (string) => [string],
         builder: (string) => Text(string),
       );
 
       await tester.pumpWidget(
-        TestPage(_searchPage),
+        TestPage(searchPage),
       );
 
       // Entering search page
@@ -463,23 +463,23 @@ void main() {
       await tester.pumpAndSettle();
 
       // Search has been successfull
-      expect(_searchPage.query, 'mal');
+      expect(searchPage.query, 'mal');
       expect(find.text('male'), findsOneWidget);
       expect(find.text('female'), findsNothing);
     });
 
     testWidgets('itemEndsWith parameter works', (tester) async {
-      final _searchPage = SearchPage<String>(
+      final searchPage = SearchPage<String>(
         items: ['malefe', 'male', 'malefe'],
         itemEndsWith: true,
-        suggestion: Text('Suggestion text'),
-        failure: Text('Failure text'),
+        suggestion: const Text('Suggestion text'),
+        failure: const Text('Failure text'),
         filter: (string) => [string],
         builder: (string) => Text(string),
       );
 
       await tester.pumpWidget(
-        TestPage(_searchPage),
+        TestPage(searchPage),
       );
 
       // Entering search page
@@ -491,25 +491,25 @@ void main() {
       await tester.pumpAndSettle();
 
       // Search has been successfull
-      expect(_searchPage.query, 'fe');
+      expect(searchPage.query, 'fe');
       expect(find.text('malefe'), findsNWidgets(2));
       expect(find.text('male'), findsNothing);
     });
 
     testWidgets('itemStartsWith & itemEndsWith parameters works',
         (tester) async {
-      final _searchPage = SearchPage<String>(
+      final searchPage = SearchPage<String>(
         items: ['female', 'male', 'female123'],
         itemStartsWith: true,
         itemEndsWith: true,
-        suggestion: Text('Suggestion text'),
-        failure: Text('Failure text'),
+        suggestion: const Text('Suggestion text'),
+        failure: const Text('Failure text'),
         filter: (string) => [string],
         builder: (string) => Text(string),
       );
 
       await tester.pumpWidget(
-        TestPage(_searchPage),
+        TestPage(searchPage),
       );
 
       // Entering search page
@@ -521,7 +521,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Search has been successfull
-      expect(_searchPage.query, 'female123');
+      expect(searchPage.query, 'female123');
       expect(find.text('female123'), findsNWidgets(2));
       expect(find.text('female'), findsNothing);
       expect(find.text('male'), findsNothing);
@@ -530,16 +530,16 @@ void main() {
     testWidgets(
       'Shows results when query is capital and has blankspaces',
       (tester) async {
-        final _searchPage = SearchPage<String>(
+        final searchPage = SearchPage<String>(
           items: _mockList,
-          suggestion: Text('Suggestion text'),
-          failure: Text('Failure text'),
+          suggestion: const Text('Suggestion text'),
+          failure: const Text('Failure text'),
           filter: (string) => [string],
           builder: (string) => Text(string),
         );
 
         await tester.pumpWidget(
-          TestPage(_searchPage),
+          TestPage(searchPage),
         );
 
         // Entering search page
@@ -556,16 +556,16 @@ void main() {
     );
 
     testWidgets('Builds correct custom result widgets', (tester) async {
-      final _searchPage = SearchPage<String>(
+      final searchPage = SearchPage<String>(
         items: _mockList,
-        suggestion: Text('Suggestion text'),
-        failure: Text('Failure text'),
+        suggestion: const Text('Suggestion text'),
+        failure: const Text('Failure text'),
         filter: (string) => [string],
         builder: (string) => ListTile(title: Text(string)),
       );
 
       await tester.pumpWidget(
-        TestPage(_searchPage),
+        TestPage(searchPage),
       );
 
       // Entering search page
@@ -591,16 +591,16 @@ void main() {
     testWidgets(
       'Shows trailing clear button when writting query',
       (tester) async {
-        final _searchPage = SearchPage<String>(
+        final searchPage = SearchPage<String>(
           items: _mockList,
-          suggestion: Text('Suggestion text'),
-          failure: Text('Failure text'),
+          suggestion: const Text('Suggestion text'),
+          failure: const Text('Failure text'),
           filter: (string) => [string],
           builder: (string) => Text(string),
         );
 
         await tester.pumpWidget(
-          TestPage(_searchPage),
+          TestPage(searchPage),
         );
 
         // Entering search page
@@ -608,10 +608,12 @@ void main() {
         await tester.pumpAndSettle();
 
         // Shows suggestion text and a hidden clear button
-        var clearButton = tester.widget<AnimatedOpacity>(find.ancestor(
-          of: find.byIcon(Icons.clear),
-          matching: find.byType(AnimatedOpacity),
-        ));
+        var clearButton = tester.widget<AnimatedOpacity>(
+          find.ancestor(
+            of: find.byIcon(Icons.clear),
+            matching: find.byType(AnimatedOpacity),
+          ),
+        );
         expect(clearButton.opacity, 0);
 
         // Typing query 'Wow'
@@ -619,35 +621,39 @@ void main() {
         await tester.pumpAndSettle();
 
         // Shows trailling clear button
-        clearButton = tester.widget<AnimatedOpacity>(find.ancestor(
-          of: find.byIcon(Icons.clear),
-          matching: find.byType(AnimatedOpacity),
-        ));
+        clearButton = tester.widget<AnimatedOpacity>(
+          find.ancestor(
+            of: find.byIcon(Icons.clear),
+            matching: find.byType(AnimatedOpacity),
+          ),
+        );
         expect(clearButton.opacity, 1);
 
         // Clears query and the clear button dissapears
         await tester.enterText(find.byType(TextField), '');
         await tester.pumpAndSettle();
 
-        clearButton = tester.widget<AnimatedOpacity>(find.ancestor(
-          of: find.byIcon(Icons.clear),
-          matching: find.byType(AnimatedOpacity),
-        ));
+        clearButton = tester.widget<AnimatedOpacity>(
+          find.ancestor(
+            of: find.byIcon(Icons.clear),
+            matching: find.byType(AnimatedOpacity),
+          ),
+        );
         expect(clearButton.opacity, 0);
       },
     );
 
     testWidgets('Clears query when clicking on clear button', (tester) async {
-      final _searchPage = SearchPage<String>(
+      final searchPage = SearchPage<String>(
         items: _mockList,
-        suggestion: Text('Suggestion text'),
-        failure: Text('Failure text'),
+        suggestion: const Text('Suggestion text'),
+        failure: const Text('Failure text'),
         filter: (string) => [string],
         builder: (string) => Text(string),
       );
 
       await tester.pumpWidget(
-        TestPage(_searchPage),
+        TestPage(searchPage),
       );
 
       // Entering search page
@@ -655,10 +661,12 @@ void main() {
       await tester.pumpAndSettle();
 
       // Shows suggestion text and a hidden clear button
-      var clearButton = tester.widget<AnimatedOpacity>(find.ancestor(
-        of: find.byIcon(Icons.clear),
-        matching: find.byType(AnimatedOpacity),
-      ));
+      var clearButton = tester.widget<AnimatedOpacity>(
+        find.ancestor(
+          of: find.byIcon(Icons.clear),
+          matching: find.byType(AnimatedOpacity),
+        ),
+      );
       expect(clearButton.opacity, 0);
 
       // Typing query Wow
@@ -666,22 +674,26 @@ void main() {
       await tester.pumpAndSettle();
 
       // Shows trailling clear button
-      clearButton = tester.widget<AnimatedOpacity>(find.ancestor(
-        of: find.byIcon(Icons.clear),
-        matching: find.byType(AnimatedOpacity),
-      ));
+      clearButton = tester.widget<AnimatedOpacity>(
+        find.ancestor(
+          of: find.byIcon(Icons.clear),
+          matching: find.byType(AnimatedOpacity),
+        ),
+      );
       expect(clearButton.opacity, 1);
 
       // Taps clear button
       await tester.tap(find.byIcon(Icons.clear));
       await tester.pumpAndSettle();
 
-      clearButton = tester.widget<AnimatedOpacity>(find.ancestor(
-        of: find.byIcon(Icons.clear),
-        matching: find.byType(AnimatedOpacity),
-      ));
+      clearButton = tester.widget<AnimatedOpacity>(
+        find.ancestor(
+          of: find.byIcon(Icons.clear),
+          matching: find.byType(AnimatedOpacity),
+        ),
+      );
       expect(find.text('Wow'), findsNothing);
-      expect(_searchPage.query, '');
+      expect(searchPage.query, '');
       expect(clearButton.opacity, 0);
     });
   });
