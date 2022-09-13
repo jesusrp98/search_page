@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 typedef SearchFilter<T> = List<String?> Function(T t);
 typedef ResultBuilder<T> = Widget Function(T t);
+typedef SortCallback<T> = int Function(T a, T b);
 
 /// This class helps to implement a search view, using [SearchDelegate].
 /// It can show suggestion & unsuccessful-search widgets.
@@ -65,6 +66,8 @@ class SearchPage<T> extends SearchDelegate<T?> {
   /// The style of the [searchFieldLabel] text widget.
   final TextStyle? searchStyle;
 
+  final SortCallback<T>? sort;
+
   SearchPage({
     this.suggestion = const SizedBox(),
     this.failure = const SizedBox(),
@@ -78,6 +81,7 @@ class SearchPage<T> extends SearchDelegate<T?> {
     this.itemEndsWith = false,
     this.onQueryUpdate,
     this.searchStyle,
+    this.sort,
   }) : super(
           searchFieldLabel: searchLabel,
           searchFieldStyle: searchStyle,
@@ -117,6 +121,7 @@ class SearchPage<T> extends SearchDelegate<T?> {
         duration: kThemeAnimationDuration,
         curve: Curves.easeInOutCubic,
         child: IconButton(
+          tooltip: MaterialLocalizations.of(context).deleteButtonTooltip,
           icon: const Icon(Icons.clear),
           onPressed: () => query = '',
         ),
@@ -129,14 +134,32 @@ class SearchPage<T> extends SearchDelegate<T?> {
     // Creates a default back button as the leading widget.
     // It's aware of targeted platform.
     // Used to close the view.
-    return IconButton(
-      icon: const BackButtonIcon(),
+    return BackButton(
       onPressed: () => close(context, null),
     );
   }
 
   @override
   Widget buildResults(BuildContext context) => buildSuggestions(context);
+
+  bool _filterByValue({
+    required String query,
+    required String? value,
+  }) {
+    if (value == null) {
+      return false;
+    }
+    if (itemStartsWith && itemEndsWith) {
+      return value == query;
+    }
+    if (itemStartsWith) {
+      return value.startsWith(query);
+    }
+    if (itemEndsWith) {
+      return value.endsWith(query);
+    }
+    return value.contains(query);
+  }
 
   @override
   Widget buildSuggestions(BuildContext context) {
@@ -156,22 +179,13 @@ class SearchPage<T> extends SearchDelegate<T?> {
               .map((value) => value?.toLowerCase().trim())
               // Finally, checks wheters any coincide with the cleaned query
               // Checks wheter the [startsWith] or [endsWith] are 'true'
-              .any(
-            (value) {
-              if (itemStartsWith == true && itemEndsWith == true) {
-                return value == cleanQuery;
-              }
-              if (itemStartsWith == true) {
-                return value?.startsWith(cleanQuery) == true;
-              }
-              if (itemEndsWith == true) {
-                return value?.endsWith(cleanQuery) == true;
-              }
-              return value?.contains(cleanQuery) == true;
-            },
-          ),
+              .any((value) => _filterByValue(query: cleanQuery, value: value)),
         )
         .toList();
+
+    if (sort != null) {
+      result.sort(sort);
+    }
 
     // Builds a list with all filtered items
     // if query and result list are not empty

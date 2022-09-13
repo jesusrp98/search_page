@@ -5,11 +5,14 @@ import 'package:search_page/search_page.dart';
 
 /// This is a very simple class, used to
 /// demo the `SearchPage` package
-class Person {
+class Person implements Comparable<Person> {
   final String name, surname;
   final num age;
 
   const Person(this.name, this.surname, this.age);
+
+  @override
+  int compareTo(Person other) => name.compareTo(other.name);
 }
 
 void main() => runApp(const MyApp());
@@ -22,7 +25,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'search_page',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.red,
       ),
       home: const MyHomePage(),
     );
@@ -77,6 +80,7 @@ class MyHomePage extends StatelessWidget {
               person.surname,
               person.age.toString(),
             ],
+            sort: (a, b) => a.compareTo(b),
             builder: (person) => ListTile(
               title: Text(person.name),
               subtitle: Text(person.surname),

@@ -1,3 +1,7 @@
+## [2.2.0] - September 13rd, 2022
+
+- Add ability to sort results in search page.
+
 ## [2.1.0] - September 13rd, 2022
 
 - **BREAKING CHANGE:** Set min Flutter version to 3.3.0.
