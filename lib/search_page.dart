@@ -8,8 +8,8 @@ typedef SortCallback<T> = int Function(T a, T b);
 /// It can show suggestion & unsuccessful-search widgets.
 class SearchPage<T> extends SearchDelegate<T?> {
   /// Set this to true to display the complete list instead of the [suggestion].
-  /// This is useful to give your users the chance to explore all the items in the
-  /// list without knowing what so search for.
+  /// This is useful to give your users the chance to explore all the items in
+  /// the list without knowing what so search for.
   final bool showItemsOnEmpty;
 
   /// Widget that is built when current query is empty.
@@ -91,17 +91,7 @@ class SearchPage<T> extends SearchDelegate<T?> {
   ThemeData appBarTheme(BuildContext context) {
     return barTheme ??
         Theme.of(context).copyWith(
-          textTheme: Theme.of(context).textTheme.copyWith(
-                headline6: TextStyle(
-                  color: Theme.of(context).primaryTextTheme.headline6?.color,
-                  fontSize: 20,
-                ),
-              ),
-          inputDecorationTheme: InputDecorationTheme(
-            hintStyle: TextStyle(
-              color: Theme.of(context).primaryTextTheme.caption?.color,
-              fontSize: 20,
-            ),
+          inputDecorationTheme: const InputDecorationTheme(
             focusedErrorBorder: InputBorder.none,
             disabledBorder: InputBorder.none,
             focusedBorder: InputBorder.none,
@@ -164,7 +154,7 @@ class SearchPage<T> extends SearchDelegate<T?> {
   @override
   Widget buildSuggestions(BuildContext context) {
     // Calles the 'onQueryUpdated' functions at the start of the operation
-    if (onQueryUpdate != null) onQueryUpdate!(query);
+    onQueryUpdate?.call(query);
 
     // Deletes possible blank spaces & converts the string to lower case
     final cleanQuery = query.toLowerCase().trim();

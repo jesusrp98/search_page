@@ -1,3 +1,8 @@
+## [2.3.0] - February 2nd, 2023
+
+- Update default search page style to match Material 3.
+- Add `very_good_analysis` package.
+
 ## [2.2.0] - September 13rd, 2022
 
 - Add ability to sort results in search page.

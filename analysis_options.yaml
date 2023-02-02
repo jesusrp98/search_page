@@ -1,5 +1,5 @@
-include: package:flutter_lints/flutter.yaml
-
+include: package:very_good_analysis/analysis_options.yaml
 linter:
   rules:
-    require_trailing_commas: true
+    public_member_api_docs: false
+    sort_constructors_first: false
