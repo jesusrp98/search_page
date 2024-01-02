@@ -8,7 +8,7 @@
 
 Fast and easy way to build a custom search experience in you app.
 
-This package aims to provide a simple way to build a search view, using available resources from the Flutter framework. It uses `SearchDelegate` as its fondation, in oder to build a 'material'
+This package aims to provide a simple way to build a search view, using available resources from the Flutter framework. It uses `SearchDelegate` as its fondation, in order to build a 'material'
 experience.
 
 One of the special features of this package is the `filter` parameter. It's a very simple way to filter out items inside a list, using different string representations.
